@@ -11,6 +11,7 @@ x, y = 0, 0
 while 1:
     player.center = (x, y)
 
+    screen.fill((0, 0, 255))
     screen.blit(player_image, player)
 
     x += 1
