@@ -9,6 +9,8 @@ while 1:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
-    if pygame.key.get_pressed()[pygame.K_ESCAPE]:
-        sys.exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                pygame.quit()
+                sys.exit()
     pygame.display.flip()
