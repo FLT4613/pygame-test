@@ -37,11 +37,11 @@ while 1:
 
     if pressed_keys[pygame.K_a]:
         player.vx = -player.speed
-    elif pressed_keys[pygame.K_d]:
+    if pressed_keys[pygame.K_d]:
         player.vx = player.speed
-    elif pressed_keys[pygame.K_w]:
+    if pressed_keys[pygame.K_w]:
         player.vy = -player.speed
-    elif pressed_keys[pygame.K_s]:
+    if pressed_keys[pygame.K_s]:
         player.vy = player.speed
 
     player.update()
