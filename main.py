@@ -30,10 +30,9 @@ class Player(pygame.sprite.Sprite):
 pygame.init()
 screen = pygame.display.set_mode((640, 480))
 player = Player()
-screen.fill((255, 255, 255))
 
 while 1:
-    screen.fill((0, 0, 255))
+    screen.fill((255, 255, 255))
     pressed_keys = pygame.key.get_pressed()
 
     if pressed_keys[pygame.K_a]:
