@@ -1,10 +1,11 @@
 import sys
 import pygame
+import random
 
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
+        pygame.sprite.Sprite.__init__(self, self.containers)
         self.image = pygame.image.load("ball.gif")
         self.rect = self.image.get_rect()
         self.vx = 0
@@ -22,6 +23,16 @@ class Player(pygame.sprite.Sprite):
             self.vy = max(self.vy-self.brake, 0)
         if self.vy < 0.0:
             self.vy = min(self.vy+self.brake, 0)
+
+
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self, self.containers)
+        self.image = pygame.image.load("ball.gif")
+        self.rect = self.image.get_rect()
+
+    def update(self):
+        self.rect.move_ip(0, random.randint(-5, 5))
 
 
 class Bullet(pygame.sprite.Sprite):
@@ -42,12 +53,17 @@ class Bullet(pygame.sprite.Sprite):
 
 pygame.init()
 screen = pygame.display.set_mode((640, 480))
-player = Player()
 
 group = pygame.sprite.RenderUpdates()
-group.add(player)
+collidegroup = pygame.sprite.Group()
 
-Bullet.containers = group
+Player.containers = group
+Bullet.containers = group, collidegroup
+Enemy.containers = group, collidegroup
+
+player = Player()
+enemy = Enemy()
+enemy.rect.center = (240, 300)
 
 while 1:
     screen.fill((255, 255, 255))
