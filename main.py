@@ -80,7 +80,11 @@ while 1:
         player.vy = player.speed
     if pressed_keys[pygame.K_z]:
         Bullet(player.rect.center, (10, 0))
-    pygame.sprite.groupcollide(bullets, enemies, True, False)
+
+    for dead in pygame.sprite.groupcollide(bullets, enemies, True, False):
+        enemy = Enemy()
+        enemy.rect.center = (random.randint(200, 600), random.randint(0, 400))
+
     group.update()
     group.draw(screen)
     pygame.display.update()
