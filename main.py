@@ -55,11 +55,12 @@ pygame.init()
 screen = pygame.display.set_mode((640, 480))
 
 group = pygame.sprite.RenderUpdates()
-collidegroup = pygame.sprite.Group()
+enemies = pygame.sprite.Group()
+bullets = pygame.sprite.Group()
 
 Player.containers = group
-Bullet.containers = group, collidegroup
-Enemy.containers = group, collidegroup
+Bullet.containers = group, enemies
+Enemy.containers = group, bullets
 
 player = Player()
 enemy = Enemy()
@@ -79,7 +80,7 @@ while 1:
         player.vy = player.speed
     if pressed_keys[pygame.K_z]:
         Bullet(player.rect.center, (10, 0))
-
+    pygame.sprite.groupcollide(bullets, enemies, True, False)
     group.update()
     group.draw(screen)
     pygame.display.update()
