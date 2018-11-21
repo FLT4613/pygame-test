@@ -51,6 +51,40 @@ class Bullet(pygame.sprite.Sprite):
             self.kill()
 
 
+class Explosion(pygame.sprite.Sprite):
+
+    def __init__(self, position):
+        pygame.sprite.Sprite.__init__(self, self.containers)
+        self.frame = 0
+        frame_num = (8, 1)
+        img_src = pygame.image.load("explosion.png")
+        self.images = []
+
+        self.frame_size = (img_src.get_width() /
+                           frame_num[0], img_src.get_height() / frame_num[1])
+        for x in range(0, frame_num[0]):
+            for y in range(0, frame_num[1]):
+                surface = pygame.Surface(self.frame_size)
+                surface.blit(
+                    img_src,
+                    (0, 0),
+                    (x * self.frame_size[0], y *
+                     self.frame_size[1]) + self.frame_size
+                )
+                self.images.append(surface)
+
+        self.image = self.images[0]
+        self.rect = self.image.get_rect()
+        self.rect.center = position
+
+    def update(self):
+        self.frame += 1
+        if self.frame == len(self.images):
+            self.kill()
+            return
+        self.image = self.images[self.frame]
+
+
 pygame.init()
 screen = pygame.display.set_mode((640, 480))
 
@@ -61,6 +95,7 @@ bullets = pygame.sprite.Group()
 Player.containers = group
 Bullet.containers = group, enemies
 Enemy.containers = group, bullets
+Explosion.containers = group
 
 player = Player()
 enemy = Enemy()
@@ -82,6 +117,8 @@ while 1:
         Bullet(player.rect.center, (10, 0))
 
     for dead in pygame.sprite.groupcollide(bullets, enemies, True, False):
+        print(dead.rect.center)
+        Explosion(dead.rect.center)
         enemy = Enemy()
         enemy.rect.center = (random.randint(200, 600), random.randint(0, 400))
 
