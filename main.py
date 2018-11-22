@@ -69,8 +69,10 @@ class Explosion(pygame.sprite.Sprite):
                     img_src,
                     (0, 0),
                     (x * self.frame_size[0], y *
-                     self.frame_size[1]) + self.frame_size
+                     self.frame_size[1]) + self.frame_size,
+                    pygame.BLEND_ADD
                 )
+                surface.set_colorkey((0, 0, 0))
                 self.images.append(surface)
 
         self.image = self.images[0]
