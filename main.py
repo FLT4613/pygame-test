@@ -80,11 +80,12 @@ class Explosion(pygame.sprite.Sprite):
         self.rect.center = position
 
     def update(self):
-        self.frame += 1
-        if self.frame == len(self.images):
+        self.frame += 0.3
+        frame_num = int(self.frame)
+        if frame_num == len(self.images):
             self.kill()
             return
-        self.image = self.images[self.frame]
+        self.image = self.images[frame_num]
 
 
 pygame.init()
