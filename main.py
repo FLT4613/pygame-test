@@ -60,16 +60,14 @@ class Explosion(pygame.sprite.Sprite):
         img_src = pygame.image.load("explosion.png")
         self.images = []
 
-        self.frame_size = (img_src.get_width() /
-                           frame_num[0], img_src.get_height() / frame_num[1])
+        self.frame_size = (img_src.get_width() / frame_num[0], img_src.get_height() / frame_num[1])
         for x in range(0, frame_num[0]):
             for y in range(0, frame_num[1]):
                 surface = pygame.Surface(self.frame_size)
                 surface.blit(
                     img_src,
                     (0, 0),
-                    (x * self.frame_size[0], y *
-                     self.frame_size[1]) + self.frame_size,
+                    (x * self.frame_size[0], y * self.frame_size[1]) + self.frame_size,
                     pygame.BLEND_ADD
                 )
                 surface.set_colorkey((0, 0, 0))
