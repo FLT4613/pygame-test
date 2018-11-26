@@ -102,8 +102,12 @@ player = Player()
 enemy = Enemy()
 enemy.rect.center = (240, 300)
 
+hp_string = pygame.font.SysFont(None, 32).render("HP:50/50", True, (0, 0, 0))
+
 while 1:
     screen.fill((255, 255, 255))
+    screen.blit(hp_string, (0, 0))
+
     pressed_keys = pygame.key.get_pressed()
 
     if pressed_keys[pygame.K_a]:
