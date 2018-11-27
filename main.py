@@ -99,15 +99,19 @@ Enemy.containers = group, bullets
 Explosion.containers = group
 
 player = Player()
-enemy = Enemy()
-enemy.rect.center = (240, 300)
+# enemy = Enemy()
+# enemy.rect.center = (240, 300)
 
 hp_string = pygame.font.SysFont(None, 32).render("HP:50/50", True, (0, 0, 0))
+
+words_font = pygame.font.SysFont(None, 32)
+words = []
 
 while 1:
     screen.fill((255, 255, 255))
     screen.blit(hp_string, (0, 0))
 
+    screen.blit(words_font.render(''.join(words), True, (0, 0, 0)), (100, 300))
     pressed_keys = pygame.key.get_pressed()
 
     if pressed_keys[pygame.K_LEFT]:
@@ -118,8 +122,8 @@ while 1:
         player.vy = -player.speed
     if pressed_keys[pygame.K_DOWN]:
         player.vy = player.speed
-    if pressed_keys[pygame.K_z]:
-        Bullet(player.rect.center, (10, 0))
+    # if pressed_keys[pygame.K_z]:
+    #     Bullet(player.rect.center, (10, 0))
 
     for dead in pygame.sprite.groupcollide(bullets, enemies, True, False):
         print(dead.rect.center)
@@ -139,4 +143,4 @@ while 1:
                 pygame.quit()
                 sys.exit()
             elif str.isalnum(event.unicode):
-                print(event.unicode)
+                words.append(event.unicode)
