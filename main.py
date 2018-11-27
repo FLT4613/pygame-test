@@ -110,13 +110,13 @@ while 1:
 
     pressed_keys = pygame.key.get_pressed()
 
-    if pressed_keys[pygame.K_a]:
+    if pressed_keys[pygame.K_LEFT]:
         player.vx = -player.speed
-    if pressed_keys[pygame.K_d]:
+    if pressed_keys[pygame.K_RIGHT]:
         player.vx = player.speed
-    if pressed_keys[pygame.K_w]:
+    if pressed_keys[pygame.K_UP]:
         player.vy = -player.speed
-    if pressed_keys[pygame.K_s]:
+    if pressed_keys[pygame.K_DOWN]:
         player.vy = player.speed
     if pressed_keys[pygame.K_z]:
         Bullet(player.rect.center, (10, 0))
