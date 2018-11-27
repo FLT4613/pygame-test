@@ -138,3 +138,5 @@ while 1:
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
                 sys.exit()
+            elif str.isalnum(event.unicode):
+                print(event.unicode)
