@@ -98,30 +98,29 @@ Bullet.containers = group, enemies
 Enemy.containers = group, bullets
 Explosion.containers = group
 
-player = Player()
+# player = Player()
 # enemy = Enemy()
 # enemy.rect.center = (240, 300)
 
-hp_string = pygame.font.SysFont(None, 32).render("HP:50/50", True, (0, 0, 0))
-
-words_font = pygame.font.SysFont(None, 32)
-words = []
-
+words_font = pygame.font.SysFont('Meiryo UI', 32)
+input_chrs = []
+target_sentence = 'niwaniwaniwaniwatorigairu'
+placeholder = target_sentence
 while 1:
     screen.fill((255, 255, 255))
-    screen.blit(hp_string, (0, 0))
-
-    screen.blit(words_font.render(''.join(words), True, (0, 0, 0)), (100, 300))
+    screen.blit(words_font.render(target_sentence, True, (0, 0, 0)), (100, 300))
+    screen.blit(words_font.render(placeholder, True, (220, 220, 220)), (100, 350))
+    screen.blit(words_font.render(''.join(input_chrs), True, (0, 0, 0)), (100, 350))
     pressed_keys = pygame.key.get_pressed()
 
-    if pressed_keys[pygame.K_LEFT]:
-        player.vx = -player.speed
-    if pressed_keys[pygame.K_RIGHT]:
-        player.vx = player.speed
-    if pressed_keys[pygame.K_UP]:
-        player.vy = -player.speed
-    if pressed_keys[pygame.K_DOWN]:
-        player.vy = player.speed
+    # if pressed_keys[pygame.K_LEFT]:
+    #     player.vx = -player.speed
+    # if pressed_keys[pygame.K_RIGHT]:
+    #     player.vx = player.speed
+    # if pressed_keys[pygame.K_UP]:
+    #     player.vy = -player.speed
+    # if pressed_keys[pygame.K_DOWN]:
+    #     player.vy = player.speed
     # if pressed_keys[pygame.K_z]:
     #     Bullet(player.rect.center, (10, 0))
 
@@ -143,4 +142,4 @@ while 1:
                 pygame.quit()
                 sys.exit()
             elif str.isalnum(event.unicode):
-                words.append(event.unicode)
+                input_chrs.append(event.unicode)
