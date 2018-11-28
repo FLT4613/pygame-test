@@ -105,11 +105,11 @@ Explosion.containers = group
 words_font = pygame.font.SysFont('Meiryo UI', 32)
 input_chrs = []
 target_sentence = 'niwaniwaniwaniwatorigairu'
-placeholder = target_sentence
+remain_chrs = [c for c in target_sentence]
 while 1:
     screen.fill((255, 255, 255))
     screen.blit(words_font.render(target_sentence, True, (0, 0, 0)), (100, 300))
-    screen.blit(words_font.render(placeholder, True, (220, 220, 220)), (100, 350))
+    screen.blit(words_font.render(target_sentence, True, (220, 220, 220)), (100, 350))
     screen.blit(words_font.render(''.join(input_chrs), True, (0, 0, 0)), (100, 350))
     pressed_keys = pygame.key.get_pressed()
 
@@ -142,4 +142,6 @@ while 1:
                 pygame.quit()
                 sys.exit()
             elif str.isalnum(event.unicode):
-                input_chrs.append(event.unicode)
+                if remain_chrs and remain_chrs[0] == event.unicode:
+                    remain_chrs = remain_chrs[1:]
+                    input_chrs.append(event.unicode)
