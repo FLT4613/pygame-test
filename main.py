@@ -104,9 +104,17 @@ Explosion.containers = group
 
 words_font = pygame.font.SysFont('Meiryo UI', 32)
 input_chrs = []
-target_sentence = 'niwaniwaniwaniwatorigairu'
-remain_chrs = [c for c in target_sentence]
+remain_chrs = []
+
+sentences = ['niwaniwaniwaniwatorigairu', 'sarumokikaraotiru', 'tonarinosibahuhaaoi']
+target_sentence = sentences[0]
+
 while 1:
+    if not remain_chrs:
+        input_chrs = []
+        target_sentence = random.choice(sentences)
+        remain_chrs = [c for c in target_sentence]
+
     screen.fill((255, 255, 255))
     screen.blit(words_font.render(target_sentence, True, (0, 0, 0)), (100, 300))
     screen.blit(words_font.render(target_sentence, True, (220, 220, 220)), (100, 350))
