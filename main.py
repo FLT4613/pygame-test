@@ -102,7 +102,7 @@ Explosion.containers = group
 # enemy = Enemy()
 # enemy.rect.center = (240, 300)
 
-words_font = pygame.font.SysFont('Meiryo UI', 32)
+words_font = pygame.font.Font('migu-1m-regular.ttf', 32)
 input_chrs = []
 remain_chrs = []
 
