@@ -1,6 +1,7 @@
 import sys
 import pygame
 import random
+from pykakasi import kakasi
 
 
 class Player(pygame.sprite.Sprite):
@@ -106,18 +107,24 @@ words_font = pygame.font.Font('migu-1m-regular.ttf', 32)
 input_chrs = []
 remain_chrs = []
 
-sentences = ['niwaniwaniwaniwatorigairu', 'sarumokikaraotiru', 'tonarinosibahuhaaoi']
-target_sentence = sentences[0]
+kakasi = kakasi()
+kakasi.setMode("H", "a")
+kakasi.setMode("K", "a")
+kakasi.setMode("J", "a")
+kakasi.setMode("r","Kunrei")
+conv = kakasi.getConverter()
+sentences = ['庭に埴輪ニワトリがいる', '猿も木から落ちる', '隣の芝生は青い']
 
 while 1:
     if not remain_chrs:
         input_chrs = []
         target_sentence = random.choice(sentences)
-        remain_chrs = [c for c in target_sentence]
+        target_sentence_roman = conv.do(target_sentence)
+        remain_chrs = [c for c in target_sentence_roman]
 
     screen.fill((255, 255, 255))
     screen.blit(words_font.render(target_sentence, True, (0, 0, 0)), (100, 300))
-    screen.blit(words_font.render(target_sentence, True, (220, 220, 220)), (100, 350))
+    screen.blit(words_font.render(target_sentence_roman, True, (220, 220, 220)), (100, 350))
     screen.blit(words_font.render(''.join(input_chrs), True, (0, 0, 0)), (100, 350))
     pressed_keys = pygame.key.get_pressed()
 

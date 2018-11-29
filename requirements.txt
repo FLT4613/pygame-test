@@ -1,0 +1,3 @@
+six
+semidbm
+git+https://github.com/miurahr/pykakasi
