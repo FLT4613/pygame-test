@@ -3,6 +3,8 @@ import pygame
 import random
 from pykakasi import kakasi
 
+pygame.init()
+
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -87,7 +89,53 @@ class Explosion(pygame.sprite.Sprite):
         self.image = self.images[frame_num]
 
 
-pygame.init()
+class Phrase(pygame.sprite.Sprite):
+    font = pygame.font.Font('migu-1m-regular.ttf', 32)
+    kakasi = kakasi()
+    kakasi.setMode("H", "a")
+    kakasi.setMode("K", "a")
+    kakasi.setMode("J", "a")
+    kakasi.setMode("r", "Kunrei")
+    conv = kakasi.getConverter()
+
+    def __init__(self, position, string):
+        pygame.sprite.Sprite.__init__(self, self.containers)
+        self.characters_roman = [c for c in self.conv.do(string)]
+
+        # 日本語/ローマ字のうち、より幅の大きい方に画像の幅を合わせる
+        character_size = self.font.size(max(self.conv.do(string), string, key=lambda x: len(x)))
+
+        surface = pygame.Surface((character_size[0], character_size[1] * 2))
+        surface.set_colorkey((0, 0, 0))
+
+        self.characters = self.font.render(string, True, (1, 1, 1), (255, 255, 255))
+
+        self.image = surface
+        self.rect = self.image.get_rect()
+        self.rect.center = position
+
+        # 文字列内の文字の参照位置
+        self.next_character_pos = 0
+
+    def update(self):
+        self.image.fill((255, 255, 255))
+        self.image.blit(self.characters, (0, 0))
+
+        if len(self.characters_roman) == self.next_character_pos:
+            self.kill()
+
+        for i, c in enumerate(self.characters_roman):
+            if not c:
+                continue
+            self.image.blit(self.font.render(c, True, (1, 1, 1), (255, 255, 255)), (i * 16, 32))
+
+    def input(self, character):
+        if self.characters_roman[self.next_character_pos] == character:
+            self.characters_roman[self.next_character_pos] = ''
+            self.next_character_pos += 1
+            Explosion((self.rect.midleft[0] + (self.next_character_pos * 16), self.rect.midleft[1]))
+
+
 screen = pygame.display.set_mode((640, 480))
 
 group = pygame.sprite.RenderUpdates()
@@ -98,36 +146,24 @@ Player.containers = group
 Bullet.containers = group, enemies
 Enemy.containers = group, bullets
 Explosion.containers = group
+Phrase.containers = group
 
 # player = Player()
 # enemy = Enemy()
 # enemy.rect.center = (240, 300)
 
-words_font = pygame.font.Font('migu-1m-regular.ttf', 32)
 input_chrs = []
 remain_chrs = []
 
-kakasi = kakasi()
-kakasi.setMode("H", "a")
-kakasi.setMode("K", "a")
-kakasi.setMode("J", "a")
-kakasi.setMode("r","Kunrei")
-conv = kakasi.getConverter()
 sentences = ['庭に埴輪ニワトリがいる', '猿も木から落ちる', '隣の芝生は青い']
+target = Phrase((200 + random.randint(1, 100), 200 + random.randint(1, 100)), random.choice(sentences))
 
 while 1:
-    if not remain_chrs:
-        input_chrs = []
-        target_sentence = random.choice(sentences)
-        target_sentence_roman = conv.do(target_sentence)
-        remain_chrs = [c for c in target_sentence_roman]
-
     screen.fill((255, 255, 255))
-    screen.blit(words_font.render(target_sentence, True, (0, 0, 0)), (100, 300))
-    screen.blit(words_font.render(target_sentence_roman, True, (220, 220, 220)), (100, 350))
-    screen.blit(words_font.render(''.join(input_chrs), True, (0, 0, 0)), (100, 350))
     pressed_keys = pygame.key.get_pressed()
-
+    if not target.alive():
+        target.remove()
+        target = Phrase((200 + random.randint(1, 100), 200 + random.randint(1, 100)), random.choice(sentences))
     # if pressed_keys[pygame.K_LEFT]:
     #     player.vx = -player.speed
     # if pressed_keys[pygame.K_RIGHT]:
@@ -157,6 +193,4 @@ while 1:
                 pygame.quit()
                 sys.exit()
             elif str.isalnum(event.unicode):
-                if remain_chrs and remain_chrs[0] == event.unicode:
-                    remain_chrs = remain_chrs[1:]
-                    input_chrs.append(event.unicode)
+                target.input(event.unicode)
