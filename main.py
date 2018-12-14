@@ -98,7 +98,7 @@ class Phrase(pygame.sprite.Sprite):
     kakasi.setMode("r", "Kunrei")
     conv = kakasi.getConverter()
 
-    def __init__(self, position, string):
+    def __init__(self, y, string):
         pygame.sprite.Sprite.__init__(self, self.containers)
         self.characters_roman = [c for c in self.conv.do(string)]
 
@@ -112,12 +112,13 @@ class Phrase(pygame.sprite.Sprite):
 
         self.image = surface
         self.rect = self.image.get_rect()
-        self.rect.center = position
-
+        self.rect.midleft = (640, y)
+        self.speed = -2.0
         # 文字列内の文字の参照位置
         self.next_character_pos = 0
 
     def update(self):
+        self.rect.move_ip(self.speed, 0)
         self.image.fill((255, 255, 255))
         self.image.blit(self.characters, (0, 0))
 
@@ -128,12 +129,14 @@ class Phrase(pygame.sprite.Sprite):
             if not c:
                 continue
             self.image.blit(self.font.render(c, True, (1, 1, 1), (255, 255, 255)), (i * 16, 32))
+        if self.rect.right < 0:
+            self.rect.left = 640
 
     def input(self, character):
         if self.characters_roman[self.next_character_pos] == character:
             self.characters_roman[self.next_character_pos] = ''
             self.next_character_pos += 1
-            Explosion((self.rect.midleft[0] + (self.next_character_pos * 16), self.rect.midleft[1]))
+            Explosion((self.rect.left + (self.next_character_pos * 16), self.rect.centery))
 
 
 screen = pygame.display.set_mode((640, 480))
@@ -156,14 +159,14 @@ input_chrs = []
 remain_chrs = []
 
 sentences = ['庭に埴輪ニワトリがいる', '猿も木から落ちる', '隣の芝生は青い']
-target = Phrase((200 + random.randint(1, 100), 200 + random.randint(1, 100)), random.choice(sentences))
+target = Phrase(200 + random.randint(1, 100), random.choice(sentences))
 
 while 1:
     screen.fill((255, 255, 255))
     pressed_keys = pygame.key.get_pressed()
     if not target.alive():
         target.remove()
-        target = Phrase((200 + random.randint(1, 100), 200 + random.randint(1, 100)), random.choice(sentences))
+        target = Phrase((200 + random.randint(0, 200)), random.choice(sentences))
     # if pressed_keys[pygame.K_LEFT]:
     #     player.vx = -player.speed
     # if pressed_keys[pygame.K_RIGHT]:
